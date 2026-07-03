@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VaultForge — Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-primary: #1A1C1E;
+    --color-secondary: #6C7278;
+    --color-tertiary: #C2410C;
+    --color-neutral: #FAF8F5;
+    --color-surface: #FFFFFF;
+    --color-border: #E5E0DA;
+    --color-success: #166534;
+    --color-danger: #B91C1C;
+    --color-muted: #9CA3A0;
+    --color-on-primary: #FFFFFF;
+    --color-on-tertiary: #FFFFFF;
+    --rounded-sm: 4px;
+    --rounded-md: 8px;
+    --rounded-lg: 12px;
+    --rounded-full: 9999px;
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 48px;
+    --space-2xl: 80px;
+    --space-3xl: 120px;
+    --font-family: 'Public Sans', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-family);
+    background: var(--color-neutral);
+    color: var(--color-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-lg); }
+  .section { padding: var(--space-2xl) 0; }
+  .section + .section { border-top: 1px solid var(--color-border); }
+
+  /* Header */
+  .ds-header { padding: var(--space-xl) 0; background: var(--color-primary); color: var(--color-on-primary); }
+  .ds-header h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; }
+  .ds-header p { color: var(--color-muted); margin-top: var(--space-sm); font-size: 1.125rem; }
+
+  /* Section titles */
+  .section-title { font-size: 1.375rem; font-weight: 600; margin-bottom: var(--space-lg); letter-spacing: -0.015em; }
+  .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-secondary); margin-bottom: var(--space-md); }
+
+  /* Color swatches */
+  .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-md); }
+  .color-swatch { border-radius: var(--rounded-md); overflow: hidden; border: 1px solid var(--color-border); }
+  .color-swatch-preview { height: 100px; }
+  .color-swatch-info { padding: var(--space-sm) var(--space-md); background: var(--color-surface); }
+  .color-swatch-name { font-weight: 600; font-size: 0.875rem; }
+  .color-swatch-hex { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-secondary); margin-top: 2px; }
+
+  /* Type scale */
+  .type-sample { margin-bottom: var(--space-lg); padding-bottom: var(--space-lg); border-bottom: 1px solid var(--color-border); }
+  .type-sample:last-child { border-bottom: none; }
+  .type-sample-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-secondary); margin-bottom: var(--space-xs); }
+  .type-sample-render { }
+  .h1-sample { font-size: 3rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.025em; }
+  .h2-sample { font-size: 2rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.015em; }
+  .h3-sample { font-size: 1.375rem; font-weight: 600; line-height: 1.3; }
+  .body-lg-sample { font-size: 1.125rem; line-height: 1.6; }
+  .body-md-sample { font-size: 1rem; line-height: 1.6; max-width: 600px; }
+  .body-sm-sample { font-size: 0.875rem; line-height: 1.5; }
+  .label-caps-sample { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .mono-sample { font-family: var(--font-mono); font-size: 0.875rem; line-height: 1.5; }
+
+  /* Spacing viz */
+  .space-viz { display: flex; flex-direction: column; gap: var(--space-sm); }
+  .space-row { display: flex; align-items: center; gap: var(--space-md); }
+  .space-bar { height: 32px; background: var(--color-tertiary); border-radius: var(--rounded-sm); opacity: 0.2; }
+  .space-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-secondary); min-width: 60px; text-align: right; }
+
+  /* Components */
+  .component-grid { display: grid; gap: var(--space-xl); }
+  .component-group { }
+  .component-group-title { font-weight: 600; margin-bottom: var(--space-md); font-size: 0.875rem; color: var(--color-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+  .component-row { display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap; }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-family); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.15s; text-decoration: none; padding: 12px 24px; }
+  .btn-primary { background: var(--color-tertiary); color: var(--color-on-tertiary); border-radius: var(--rounded-sm); }
+  .btn-primary:hover { background: #9A3408; }
+  .btn-ghost { background: var(--color-surface); color: var(--color-primary); border-radius: var(--rounded-sm); }
+  .btn-ghost:hover { background: var(--color-neutral); }
+
+  /* Card */
+  .vf-card { background: var(--color-surface); border-radius: var(--rounded-md); padding: var(--space-lg); border: 1px solid var(--color-border); }
+  .vf-card h4 { font-weight: 600; margin-bottom: var(--space-sm); }
+
+  /* Input */
+  .vf-input { font-family: var(--font-family); font-size: 1rem; padding: 12px 16px; border: 1px solid var(--color-border); border-radius: var(--rounded-sm); background: var(--color-surface); color: var(--color-primary); min-width: 280px; }
+  .vf-input:focus { outline: 2px solid var(--color-tertiary); outline-offset: -1px; border-color: transparent; }
+
+  /* Tag & Badge */
+  .tag { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: var(--rounded-full); background: var(--color-neutral); color: var(--color-secondary); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: var(--rounded-full); background: var(--color-tertiary); color: var(--color-on-tertiary); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* Tweaks */
+  .tweaks { position: fixed; bottom: var(--space-lg); right: var(--space-lg); z-index: 100; }
+  .tweaks-toggle { width: 44px; height: 44px; border-radius: var(--rounded-full); background: var(--color-primary); color: var(--color-on-primary); border: none; cursor: pointer; font-size: 1.25rem; display: flex; align-items: center; justify-content: center; }
+  .tweaks-panel { display: none; position: absolute; bottom: 52px; right: 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-md); min-width: 200px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .tweaks-panel.open { display: block; }
+  .tweaks-panel label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-secondary); margin-bottom: var(--space-xs); margin-top: var(--space-sm); }
+  .tweaks-panel select { width: 100%; padding: 8px; font-family: var(--font-family); font-size: 0.875rem; border: 1px solid var(--color-border); border-radius: var(--rounded-sm); }
+
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="ds-header">
+  <div class="container">
+    <div class="section-label" style="color:var(--color-muted)">Design System</div>
+    <h1>VaultForge</h1>
+    <p>Arquitetura da confiança — tokens, tipografia, componentes e governança visual.</p>
+  </div>
+</header>
+
+<!-- Colors -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">01 — Colors</div>
+    <h2 class="section-title">Paleta</h2>
+    <p class="body-md-sample" style="margin-bottom:var(--space-lg)">9 cores. Neutro quente como fundo. Argila queimada como único driver de interação.</p>
+    <div class="color-grid" id="color-grid"></div>
+  </div>
+</section>
+
+<!-- Typography -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">02 — Typography</div>
+    <h2 class="section-title">Escala tipográfica — Public Sans</h2>
+    <div class="type-sample">
+      <div class="type-sample-label">h1 / 3rem / 700 / -0.025em</div>
+      <div class="type-sample-render h1-sample">Organizar dados é o passo zero para IA</div>
+    </div>
+    <div class="type-sample">
+      <div class="type-sample-label">h2 / 2rem / 600 / -0.015em</div>
+      <div class="type-sample-render h2-sample">Memória corporativa que não some quando alguém sai</div>
+    </div>
+    <div class="type-sample">
+      <div class="type-sample-label">h3 / 1.375rem / 600</div>
+      <div class="type-sample-render h3-sample">Runbooks, decisões e critérios viram ativo da empresa</div>
+    </div>
+    <div class="type-sample">
+      <div class="type-sample-label">body-lg / 1.125rem / 1.6</div>
+      <div class="type-sample-render body-lg-sample">Antes de pensar em agentes, organize o que a empresa já sabe: dados relevantes, decisões, calls e fontes oficiais.</div>
+    </div>
+    <div class="type-sample">
+      <div class="type-sample-label">body-md / 1rem / 1.6</div>
+      <div class="type-sample-render body-md-sample">A página cria uma categoria nova que ninguém procura, não oferece prova social num mercado onde relacionamento é tudo, e pede um compromisso desproporcional ao nível de confiança construído.</div>
+    </div>
+    <div class="type-sample">
+      <div class="type-sample-label">body-sm / 0.875rem / 1.5</div>
+      <div class="type-sample-render body-sm-sample">Public Sans para tudo. JetBrains Mono para código e dados tabulares. Hierarquia vem de peso e escala, não de família.</div>
+    </div>
+    <div class="type-sample">
+      <div class="type-sample-label">label-caps / 0.75rem / 600 / 0.08em / uppercase</div>
+      <div class="type-sample-render label-caps-sample">Diagnóstico Operacional • 5 Dias Úteis • R$ 2.900</div>
+    </div>
+    <div class="type-sample">
+      <div class="type-sample-label">mono / JetBrains Mono / 0.875rem</div>
+      <div class="type-sample-render mono-sample">owner: comercial | source: CRM + call | status: pronto_para_ia</div>
+    </div>
+  </div>
+</section>
+
+<!-- Spacing -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">03 — Spacing</div>
+    <h2 class="section-title">Escala de espaçamento (base 4px)</h2>
+    <div class="space-viz" id="space-viz"></div>
+  </div>
+</section>
+
+<!-- Rounded -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">04 — Shapes</div>
+    <h2 class="section-title">Cantos arredondados</h2>
+    <div class="component-row" style="margin-top:var(--space-lg)">
+      <div style="width:80px;height:80px;background:var(--color-tertiary);border-radius:var(--rounded-sm);display:flex;align-items:center;justify-content:center;color:var(--color-on-tertiary);font-family:var(--font-mono);font-size:0.75rem">sm 4px</div>
+      <div style="width:80px;height:80px;background:var(--color-tertiary);border-radius:var(--rounded-md);display:flex;align-items:center;justify-content:center;color:var(--color-on-tertiary);font-family:var(--font-mono);font-size:0.75rem">md 8px</div>
+      <div style="width:80px;height:80px;background:var(--color-tertiary);border-radius:var(--rounded-lg);display:flex;align-items:center;justify-content:center;color:var(--color-on-tertiary);font-family:var(--font-mono);font-size:0.75rem">lg 12px</div>
+      <div style="width:80px;height:40px;background:var(--color-tertiary);border-radius:var(--rounded-full);display:flex;align-items:center;justify-content:center;color:var(--color-on-tertiary);font-family:var(--font-mono);font-size:0.75rem">full</div>
+    </div>
+  </div>
+</section>
+
+<!-- Components -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">05 — Components</div>
+    <h2 class="section-title">Componentes</h2>
+    <div class="component-grid">
+      <div class="component-group">
+        <div class="component-group-title">Buttons</div>
+        <div class="component-row">
+          <button class="btn btn-primary">Diagnóstico R$ 2.900</button>
+          <button class="btn btn-ghost">Fazer autodiagnóstico</button>
+        </div>
+      </div>
+      <div class="component-group">
+        <div class="component-group-title">Card</div>
+        <div class="vf-card" style="max-width:480px">
+          <h4>Qualificação de lead B2B</h4>
+          <p class="body-sm-sample" style="margin-bottom:var(--space-sm)">owner: comercial · source: CRM + call gravada · status: ativo</p>
+          <p class="body-sm-sample" style="color:var(--color-secondary)">Se lead tem dor clara, orçamento provável e urgência, gerar resumo para diagnóstico. Caso contrário, nutrir com material educativo.</p>
+        </div>
+      </div>
+      <div class="component-group">
+        <div class="component-group-title">Input</div>
+        <input class="vf-input" type="text" placeholder="Seu email corporativo" />
+      </div>
+      <div class="component-group">
+        <div class="component-group-title">Tags & Badges</div>
+        <div class="component-row">
+          <span class="tag">Comercial</span>
+          <span class="tag">Runbook</span>
+          <span class="tag">Ativo</span>
+          <span class="badge">Novo</span>
+          <span class="badge">IA Ready</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Theme comparison (VaultForge vs Apressado) -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">06 — Context</div>
+    <h2 class="section-title">Aplicação em tabela de diferenciação</h2>
+    <table style="width:100%;border-collapse:collapse;margin-top:var(--space-lg);font-size:0.875rem">
+      <thead>
+        <tr style="border-bottom:2px solid var(--color-primary)">
+          <th style="text-align:left;padding:var(--space-sm) var(--space-md);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;font-size:0.75rem">Camada</th>
+          <th style="text-align:left;padding:var(--space-sm) var(--space-md);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;font-size:0.75rem;color:var(--color-tertiary)">VaultForge</th>
+          <th style="text-align:left;padding:var(--space-sm) var(--space-md);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;font-size:0.75rem;color:var(--color-muted)">Apressado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--color-border)"><td style="padding:var(--space-sm) var(--space-md);font-weight:600">Começo</td><td style="padding:var(--space-sm) var(--space-md);color:var(--color-tertiary)">Memória corporativa + dados organizados</td><td style="padding:var(--space-sm) var(--space-md);color:var(--color-muted)">Lista de agentes genéricos</td></tr>
+        <tr style="border-bottom:1px solid var(--color-border)"><td style="padding:var(--space-sm) var(--space-md);font-weight:600">Diagnóstico</td><td style="padding:var(--space-sm) var(--space-md);color:var(--color-tertiary)">Dependência crítica, gaps visíveis</td><td style="padding:var(--space-sm) var(--space-md);color:var(--color-muted)">"Precisamos usar IA"</td></tr>
+        <tr style="border-bottom:1px solid var(--color-border)"><td style="padding:var(--space-sm) var(--space-md);font-weight:600">IA</td><td style="padding:var(--space-sm) var(--space-md);color:var(--color-tertiary)">Inserção gradual com contexto</td><td style="padding:var(--space-sm) var(--space-md);color:var(--color-muted)">Agente sem saber onde atuar</td></tr>
+        <tr style="border-bottom:1px solid var(--color-border)"><td style="padding:var(--space-sm) var(--space-md);font-weight:600">Conhecimento</td><td style="padding:var(--space-sm) var(--space-md);color:var(--color-tertiary)">Ativo da empresa com owner e revisão</td><td style="padding:var(--space-sm) var(--space-md);color:var(--color-muted)">Documento solto sem validade</td></tr>
+        <tr><td style="padding:var(--space-sm) var(--space-md);font-weight:600">Continuidade</td><td style="padding:var(--space-sm) var(--space-md);color:var(--color-tertiary)">Colaborador sai, conhecimento fica</td><td style="padding:var(--space-sm) var(--space-md);color:var(--color-muted)">Base morre com a pessoa</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section" style="background:var(--color-primary);color:var(--color-on-primary)">
+  <div class="container">
+    <h2 style="font-size:2rem;font-weight:600;letter-spacing:-0.015em">Primeiro memória, depois automação.</h2>
+    <p style="color:var(--color-muted);margin-top:var(--space-sm);max-width:600px">O design system VaultForge está documentado em <code style="font-family:var(--font-mono);color:var(--color-on-primary);background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:3px">DESIGN.md</code>. Governança visual com a mesma disciplina que aplicamos aos dados dos clientes.</p>
+  </div>
+</section>
+
+<div class="tweaks">
+  <button class="tweaks-toggle" onclick="document.querySelector('.tweaks-panel').classList.toggle('open')" aria-label="Tweaks">⚙</button>
+  <div class="tweaks-panel">
+    <label>Tema</label>
+    <select onchange="document.body.dataset.theme=this.value"><option value="">Padrão</option><option value="dark">Dark</option></select>
+  </div>
+</div>
+
+<script>
+  // Render color swatches
+  const colors = [
+    { name: 'primary', hex: '#1A1C1E', on: '#FFFFFF' },
+    { name: 'secondary', hex: '#6C7278', on: '#FFFFFF' },
+    { name: 'tertiary', hex: '#C2410C', on: '#FFFFFF' },
+    { name: 'neutral', hex: '#FAF8F5', on: '#1A1C1E' },
+    { name: 'surface', hex: '#FFFFFF', on: '#1A1C1E' },
+    { name: 'border', hex: '#E5E0DA', on: '#1A1C1E' },
+    { name: 'success', hex: '#166534', on: '#FFFFFF' },
+    { name: 'danger', hex: '#B91C1C', on: '#FFFFFF' },
+    { name: 'muted', hex: '#9CA3A0', on: '#1A1C1E' },
+  ];
+  const grid = document.getElementById('color-grid');
+  colors.forEach(c => {
+    const swatch = document.createElement('div');
+    swatch.className = 'color-swatch';
+    swatch.innerHTML = `<div class="color-swatch-preview" style="background:${c.hex}"></div><div class="color-swatch-info"><div class="color-swatch-name">${c.name}</div><div class="color-swatch-hex">${c.hex}</div></div>`;
+    grid.appendChild(swatch);
+  });
+
+  // Render spacing bars
+  const spaces = [
+    { name: 'xs', px: 4 }, { name: 'sm', px: 8 }, { name: 'md', px: 16 },
+    { name: 'lg', px: 24 }, { name: 'xl', px: 48 }, { name: '2xl', px: 80 }, { name: '3xl', px: 120 }
+  ];
+  const viz = document.getElementById('space-viz');
+  spaces.forEach(s => {
+    const row = document.createElement('div');
+    row.className = 'space-row';
+    row.innerHTML = `<span class="space-label">${s.name} (${s.px}px)</span><div class="space-bar" style="width:${Math.min(s.px * 3, 360)}px"></div>`;
+    viz.appendChild(row);
+  });
+</script>
+
+</body>
+</html>

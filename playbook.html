@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VaultForge — Memória operacional para empresas que vão usar IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-primary: #1A1C1E;
+    --color-secondary: #6C7278;
+    --color-tertiary: #C2410C;
+    --color-neutral: #FAF8F5;
+    --color-surface: #FFFFFF;
+    --color-border: #E5E0DA;
+    --color-success: #166534;
+    --color-muted: #9CA3A0;
+    --color-on-primary: #FFFFFF;
+    --color-on-tertiary: #FFFFFF;
+    --rounded-sm: 4px;
+    --rounded-md: 8px;
+    --rounded-lg: 12px;
+    --rounded-full: 9999px;
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 48px;
+    --space-2xl: 80px;
+    --space-3xl: 120px;
+    --font-family: 'Public Sans', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --content-width: 960px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-family);
+    background: var(--color-surface);
+    color: var(--color-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Shared ── */
+  .container { max-width: var(--content-width); margin: 0 auto; padding: 0 var(--space-lg); }
+  .section { padding: var(--space-2xl) 0; }
+  .section-eyebrow { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-tertiary); margin-bottom: var(--space-sm); }
+  .section-heading { font-size: 2rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.015em; margin-bottom: var(--space-md); }
+  .section-sub { font-size: 1.125rem; color: var(--color-secondary); max-width: 640px; margin-bottom: var(--space-xl); line-height: 1.6; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-family); font-size: 0.875rem; font-weight: 600; border: none; cursor: pointer; text-decoration: none; padding: 12px 24px; border-radius: var(--rounded-sm); transition: background 0.15s; white-space: nowrap; }
+  .btn-primary { background: var(--color-tertiary); color: var(--color-on-tertiary); }
+  .btn-primary:hover { background: #9A3408; }
+  .btn-ghost { background: transparent; color: var(--color-primary); border: 1px solid var(--color-border); }
+  .btn-ghost:hover { background: var(--color-neutral); }
+
+  /* ── Nav ── */
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border); }
+  .nav .container { display: flex; align-items: center; justify-content: space-between; padding-top: var(--space-sm); padding-bottom: var(--space-sm); }
+  .nav-logo { font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; }
+  .nav-logo span { color: var(--color-tertiary); }
+
+  /* ── Announcement Banner ── */
+  .announce { padding: var(--space-3xl) 0 var(--space-xl); }
+  .announce-meta { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-muted); margin-bottom: var(--space-lg); }
+  .announce h1 { font-size: 3rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.025em; margin-bottom: var(--space-lg); }
+  .announce h1 em { font-style: normal; color: var(--color-tertiary); }
+  .announce-lead { font-size: 1.25rem; line-height: 1.5; color: var(--color-secondary); max-width: 700px; margin-bottom: var(--space-lg); }
+  .announce-stat { font-size: 0.875rem; color: var(--color-secondary); border-left: 3px solid var(--color-tertiary); padding-left: var(--space-md); margin-bottom: var(--space-xl); max-width: 640px; }
+
+  /* ── Quote Block ── */
+  .pullquote { padding: var(--space-xl) 0; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+  .pullquote blockquote { font-size: 1.375rem; line-height: 1.45; font-weight: 500; max-width: 800px; }
+  .pullquote blockquote::before { content: '\201C'; display: block; font-size: 3rem; line-height: 1; color: var(--color-tertiary); margin-bottom: var(--space-sm); }
+  .pullquote figcaption { font-size: 0.875rem; color: var(--color-secondary); margin-top: var(--space-md); }
+  .pullquote figcaption strong { color: var(--color-primary); }
+
+  /* ── How It Works ── */
+  .hiw-steps { display: flex; flex-direction: column; gap: var(--space-md); max-width: 720px; }
+  .hiw-step { display: flex; gap: var(--space-lg); align-items: baseline; padding: var(--space-md) 0; }
+  .hiw-step-num { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; color: var(--color-tertiary); min-width: 60px; padding-top: 2px; }
+  .hiw-step h4 { font-weight: 600; margin-bottom: 2px; }
+  .hiw-step p { font-size: 0.875rem; color: var(--color-secondary); }
+
+  /* ── Workflow Cards ── */
+  .workflow-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-md); }
+  .workflow-card { border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-lg); }
+  .workflow-card .wf-icon { font-size: 1.25rem; margin-bottom: var(--space-sm); }
+  .workflow-card h4 { font-weight: 600; font-size: 0.875rem; margin-bottom: var(--space-xs); }
+  .workflow-card p { font-size: 0.8125rem; color: var(--color-secondary); line-height: 1.5; }
+  .workflow-card .wf-tools { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-muted); margin-top: var(--space-sm); }
+
+  .workflow-more { font-size: 0.8125rem; color: var(--color-secondary); margin-top: var(--space-md); }
+
+  /* ── Testimonial Carousel ── */
+  .carousel { position: relative; }
+  .carousel-track { overflow: hidden; }
+  .carousel-slides { display: flex; transition: transform 0.3s ease; }
+  .carousel-slide { min-width: 100%; padding: var(--space-lg); }
+  .carousel-slide blockquote { font-size: 1.125rem; line-height: 1.5; font-style: italic; margin-bottom: var(--space-md); }
+  .carousel-slide blockquote::before { content: '\201C'; font-size: 2rem; line-height: 1; color: var(--color-tertiary); display: block; }
+  .carousel-attribution { font-size: 0.8125rem; color: var(--color-secondary); }
+  .carousel-attribution strong { color: var(--color-primary); display: block; }
+  .carousel-controls { display: flex; align-items: center; justify-content: center; gap: var(--space-lg); margin-top: var(--space-lg); }
+  .carousel-dots { display: flex; gap: var(--space-sm); }
+  .carousel-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-border); border: none; cursor: pointer; padding: 0; }
+  .carousel-dot.active { background: var(--color-tertiary); }
+  .carousel-arrow { background: none; border: 1px solid var(--color-border); border-radius: var(--rounded-full); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; color: var(--color-primary); }
+  .carousel-arrow:hover { background: var(--color-neutral); }
+  .carousel-counter { font-size: 0.75rem; color: var(--color-muted); font-family: var(--font-mono); }
+
+  /* ── Trust ── */
+  .trust-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+  .trust-item { }
+  .trust-item h4 { font-size: 0.875rem; font-weight: 600; margin-bottom: var(--space-xs); }
+  .trust-item p { font-size: 0.8125rem; color: var(--color-secondary); line-height: 1.5; }
+
+  /* ── Partner quotes ── */
+  .partner-quotes { display: flex; flex-direction: column; gap: var(--space-lg); }
+  .partner-quote { border-left: 2px solid var(--color-tertiary); padding-left: var(--space-lg); }
+  .partner-quote blockquote { font-size: 0.9375rem; line-height: 1.5; color: var(--color-secondary); margin-bottom: var(--space-sm); }
+  .partner-quote figcaption { font-size: 0.8125rem; }
+  .partner-quote figcaption strong { color: var(--color-primary); display: block; }
+
+  /* ── Education ── */
+  .edu-box { background: var(--color-neutral); border-radius: var(--rounded-md); padding: var(--space-xl); }
+  .edu-box h4 { font-weight: 600; margin-bottom: var(--space-sm); }
+  .edu-box p { font-size: 0.875rem; color: var(--color-secondary); max-width: 560px; margin-bottom: var(--space-lg); }
+
+  /* ── CTA bar ── */
+  .cta-bar { padding: var(--space-2xl) 0; text-align: center; background: var(--color-primary); color: var(--color-on-primary); }
+  .cta-bar h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: var(--space-sm); }
+  .cta-bar p { color: var(--color-muted); font-size: 0.875rem; margin-bottom: var(--space-lg); }
+
+  @media (max-width: 768px) {
+    .announce h1 { font-size: 1.875rem; }
+    .section-heading { font-size: 1.5rem; }
+    .workflow-grid { grid-template-columns: 1fr; }
+    .trust-grid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .carousel-slides, .btn { transition: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-logo">Vault<span>Forge</span></div>
+    <a href="#autoavaliacao" class="btn btn-primary" style="font-size:0.75rem;padding:8px 16px">Autodiagnóstico grátis →</a>
+  </div>
+</nav>
+
+<!-- ═══ 1. ANNOUNCEMENT ═══ -->
+<section class="announce">
+  <div class="container">
+    <div class="announce-meta">Lançamento · Julho 2026</div>
+    <h1>VaultForge Empresas<br>— <em>memória operacional</em> que a IA consegue ler</h1>
+    <p class="announce-lead">
+      Estamos lançando o VaultForge Empresas — um método de diagnóstico e estruturação que transforma o conhecimento disperso da sua operação em uma base viva. A mesma informação que hoje sobrevive em mensagens de WhatsApp, planilhas soltas e na cabeça de 3 pessoas-chave vira runbook com dono, fonte e validade. Depois disso, a IA entra com contexto real.
+    </p>
+    <p class="announce-stat">
+      Empresas de 20 a 200 pessoas representam <strong>70% dos empregos formais</strong> no Brasil, mas a adoção de IA ainda patina. O motivo raramente é o modelo. É contexto. Ferramentas e treinamentos não são feitos para como essas empresas operam — e o uso da IA quase sempre para na tela de chat. O VaultForge fecha esse gap: antes de automatizar, organize.
+    </p>
+    <a href="#autoavaliacao" class="btn btn-primary">Fazer autodiagnóstico gratuito (5 min) →</a>
+  </div>
+</section>
+
+<!-- ═══ 2. EXECUTIVE QUOTE ═══ -->
+<figure class="pullquote">
+  <div class="container">
+    <blockquote>
+      Empresas brasileiras de médio porte nunca tiveram os recursos de uma grande corporação para organizar conhecimento. A IA é a primeira tecnologia que pode fechar esse gap — mas só se a base de dados existir antes do agente. O VaultForge nasceu para isso: pegar a informação que está na cabeça das pessoas e transformar em ativo da empresa. Depois, a automação entra com governança. A pessoa toca o negócio, a memória garante que o conhecimento não sai pela porta quando alguém sai.
+    </blockquote>
+    <figcaption>
+      <strong>[NOME DO FUNDADOR]</strong>
+      Founder, VaultForge
+    </figcaption>
+  </div>
+</figure>
+
+<!-- ═══ 3. HOW IT WORKS ═══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-eyebrow">Como funciona</div>
+    <h2 class="section-heading">Três passos. O primeiro você compra sozinho.</h2>
+    <p class="section-sub">Conectamos as fontes que sua empresa já usa, mapeamos o que é crítico, e entregamos uma base com dono, revisão e validade. Você aprova cada etapa antes de seguir.</p>
+    <div class="hiw-steps">
+      <div class="hiw-step">
+        <div class="hiw-step-num">01</div>
+        <div>
+          <h4>Diagnóstico de 5 dias</h4>
+          <p>Levantamos dados, decisões, calls e exceções que estão em Slack, WhatsApp, planilhas e na cabeça das pessoas. Você recebe um relatório de 12 páginas com inventário completo, gaps e recomendações. <strong>R$ 2.900, pagamento único.</strong></p>
+        </div>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-step-num">02</div>
+        <div>
+          <h4>Estruturação da memória</h4>
+          <p>Transformamos achados em runbooks vivos: cada processo com owner, fonte oficial, prazo de revisão e critério de decisão. Sua equipe aprova. Se alguém sair, o conhecimento fica.</p>
+        </div>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-step-num">03</div>
+        <div>
+          <h4>IA com contexto real</h4>
+          <p>Com a base pronta, cada automação ou agente recebe o contexto antes de agir: etapa, owner, critério, fonte e limite de atuação. Zero alucinação operacional.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 4. WORKFLOWS ═══ -->
+<section class="section" style="background:var(--color-neutral)">
+  <div class="container">
+    <div class="section-eyebrow">Workflows prontos</div>
+    <h2 class="section-heading">Rotinas que sua operação ganha quando a memória está no lugar</h2>
+    <p class="section-sub">O diagnóstico revela quais fluxos geram mais atrito. Mas aqui está o que empresas do seu porte costumam resolver primeiro.</p>
+    <div class="workflow-grid">
+      <div class="workflow-card">
+        <div class="wf-icon">🏷️</div>
+        <h4>Qualificação de lead com critério único</h4>
+        <p>Unificar critérios de qualificação que cada vendedor aplica de um jeito. Se lead tem dor clara, orçamento provável e urgência → gerar briefing. Senão → nutrir com material educativo.</p>
+        <div class="wf-tools">CRM + Call Gravada → Runbook</div>
+      </div>
+      <div class="workflow-card">
+        <div class="wf-icon">🔄</div>
+        <h4>Onboarding de líder em 4 dias</h4>
+        <p>Quando um head de operações entra, ele não precisa de 3 semanas reconstruindo critérios. O runbook de cada área diz: quem decide o quê, com qual critério, onde está a fonte.</p>
+        <div class="wf-tools">Slack + Notion → Runbook + Dashboard</div>
+      </div>
+      <div class="workflow-card">
+        <div class="wf-icon">📋</div>
+        <h4>Handoff Comercial → CS sem ruptura</h4>
+        <p>O que o vendedor prometeu, o CS executa. Cada etapa do handoff vira runbook com dono: proposta aceita → kickoff em 48h → primeiro health check em 7 dias.</p>
+        <div class="wf-tools">CRM + WhatsApp → Runbook + Automação</div>
+      </div>
+      <div class="workflow-card">
+        <div class="wf-icon">🧠</div>
+        <h4>Decisões que não se perdem em call</h4>
+        <p>Reunião de estratégia, 1:1, OKR review: cada decisão vira registro com quem decidiu, quando, com qual critério e próximos passos. Linkado às pessoas e equipes certas.</p>
+        <div class="wf-tools">Google Meet + Notion → Registry</div>
+      </div>
+    </div>
+    <p class="workflow-more">E também: runbook de fechamento contábil, triagem de demanda de produto, playbook de prospecção outbound, handoff de plantão técnico, e mais.</p>
+  </div>
+</section>
+
+<!-- ═══ 5. TESTIMONIAL CAROUSEL ═══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-eyebrow">Depoimentos</div>
+    <div class="carousel" id="carousel">
+      <div class="carousel-track">
+        <div class="carousel-slides" id="carousel-slides">
+          <div class="carousel-slide">
+            <blockquote>Quando nosso head de operações saiu, perdemos 3 semanas reconstruindo critérios que só ele conhecia. Depois do VaultForge, o runbook de qualificação ficou documentado e o time novo operou em 4 dias.</blockquote>
+            <div class="carousel-attribution"><strong>[NOME DO CLIENTE]</strong>COO, [EMPRESA A]</div>
+          </div>
+          <div class="carousel-slide">
+            <blockquote>A gente achava que o problema era o modelo de IA. O diagnóstico mostrou que o gargalo era contexto — 80% das nossas decisões operacionais não tinham registro. Depois de 3 meses com a base organizada, o agente de triagem entrou rodando.</blockquote>
+            <div class="carousel-attribution"><strong>[NOME DO CLIENTE]</strong>CTO, [EMPRESA B]</div>
+          </div>
+          <div class="carousel-slide">
+            <blockquote>Horas procurando informação que não existe mais acabaram. Cada área tem dono, cada decisão tem registro. Parece básico, mas empresa de 80 pessoas não faz isso sozinha. O VaultForge trouxe a disciplina que faltava.</blockquote>
+            <div class="carousel-attribution"><strong>[NOME DO CLIENTE]</strong>Founder, [EMPRESA C]</div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-arrow" id="carousel-prev" aria-label="Anterior">←</button>
+        <div class="carousel-dots" id="carousel-dots"></div>
+        <span class="carousel-counter" id="carousel-counter">01 / 03</span>
+        <button class="carousel-arrow" id="carousel-next" aria-label="Próximo">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 6. TRUST ═══ -->
+<section class="section" style="background:var(--color-neutral)">
+  <div class="container">
+    <div class="section-eyebrow">Governança</div>
+    <h2 class="section-heading">Construído para confiança</h2>
+    <p class="section-sub">Numa pesquisa que fizemos com COOs de empresas brasileiras de 20 a 200 pessoas, <strong>8 em cada 10</strong> disseram que o maior risco operacional não é tecnologia — é conhecimento preso em pessoas. Com o VaultForge:</p>
+    <div class="trust-grid">
+      <div class="trust-item">
+        <h4>Você aprova cada etapa</h4>
+        <p>O diagnóstico é apresentado com recomendações; você decide o que priorizar. A estruturação passa por revisão de cada dono de área. Nada vai ao ar sem validação.</p>
+      </div>
+      <div class="trust-item">
+        <h4>Seu conhecimento, sua propriedade</h4>
+        <p>Toda informação documentada é da sua empresa. Se encerrar o projeto, os runbooks e registros são seus. Não treinamos modelos com dados de cliente.</p>
+      </div>
+      <div class="trust-item">
+        <h4>Governança contínua, não projeto que envelhece</h4>
+        <p>Cada runbook tem owner, status, source of truth e review_by com data. A base não envelhece sozinha — tem ciclo de revisão programado.</p>
+      </div>
+      <div class="trust-item">
+        <h4>Se a pessoa sair, o conhecimento fica</h4>
+        <p>O método é desenhado para o pior cenário: turnover. Se o dono de um runbook sair amanhã, o próximo assume com o runbook na mão. Onboarding vira leitura, não investigação.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 7. PARTNERS ═══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-eyebrow">Parceiros</div>
+    <h2 class="section-heading">Trabalhamos dentro das ferramentas que sua empresa já usa</h2>
+    <p class="section-sub">O VaultForge não pede para você abandonar nada. Extraímos e organizamos o conhecimento que já está no seu CRM, Slack, WhatsApp, Notion, Google Workspace e calls.</p>
+    <div class="partner-quotes">
+      <div class="partner-quote">
+        <blockquote>Empresas de médio porte brasileiras movem a economia. O VaultForge resolve o pré-requisito que ninguém atacava: antes de plugar IA no CRM, organize o que o CRM já sabe. Essa parceria fecha o ciclo de inteligência operacional.</blockquote>
+        <figcaption><strong>[NOME]</strong>Diretor de Parcerias, [CRM Partner]</figcaption>
+      </div>
+      <div class="partner-quote">
+        <blockquote>O problema mais subestimado em tech é decisão não documentada. Já vimos empresas refazendo a mesma arquitetura 3 vezes porque o ADR original estava na cabeça de um tech lead que saiu. O VaultForge ataca isso na raiz.</blockquote>
+        <figcaption><strong>[NOME]</strong>CTO, [Technology Partner]</figcaption>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 8. EDUCATION ═══ -->
+<section class="section" style="background:var(--color-neutral)" id="autoavaliacao">
+  <div class="container">
+    <div class="edu-box">
+      <div class="section-eyebrow">Prontidão Operacional para IA</div>
+      <h2 class="section-heading" style="margin-top:0">Autodiagnóstico gratuito em 5 minutos</h2>
+      <p>Ferramentas não bastam. Owners e times precisam saber por onde começar. Por isso criamos o autodiagnóstico gratuito de prontidão operacional: 5 perguntas que revelam onde está o conhecimento crítico da sua empresa e quais gaps atacar primeiro. Inspirado em casos reais de empresas que já passaram por isso — com orientação passo a passo sobre como preparar sua operação para IA com segurança.</p>
+      <p style="font-size:0.75rem;color:var(--color-muted);margin-bottom:var(--space-lg)">Disponível agora. Sem cadastro, sem compromisso.</p>
+      <a href="#" class="btn btn-primary">Fazer autodiagnóstico gratuito →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 9. CTA ═══ -->
+<section class="cta-bar">
+  <div class="container">
+    <h2>Primeiro memória, depois automação.</h2>
+    <p>Prepare sua empresa para IA começando pelos dados que movem receita, entrega e decisão.</p>
+    <a href="#" class="btn btn-primary" style="background:var(--color-on-primary);color:var(--color-primary)">Começar agora →</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="padding:var(--space-xl) 0;text-align:center;font-size:0.75rem;color:var(--color-muted);border-top:1px solid var(--color-border)">
+  <div class="container">VaultForge © 2026 · <a href="#" style="color:var(--color-secondary)">DESIGN.md</a> · <a href="#" style="color:var(--color-secondary)">Termos</a> · <a href="#" style="color:var(--color-secondary)">Privacidade</a></div>
+</footer>
+
+<script>
+// Carousel
+(function() {
+  const slides = document.getElementById('carousel-slides');
+  const dots = document.getElementById('carousel-dots');
+  const counter = document.getElementById('carousel-counter');
+  const total = slides.children.length;
+  let current = 0;
+
+  // Create dots
+  for (let i = 0; i < total; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => go(i));
+    dots.appendChild(dot);
+  }
+
+  function go(i) {
+    current = i;
+    slides.style.transform = `translateX(-${current * 100}%)`;
+    document.querySelectorAll('.carousel-dot').forEach((d, j) => d.classList.toggle('active', j === current));
+    counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+  }
+
+  document.getElementById('carousel-prev').addEventListener('click', () => go((current - 1 + total) % total));
+  document.getElementById('carousel-next').addEventListener('click', () => go((current + 1) % total));
+})();
+</script>
+
+</body>
+</html>

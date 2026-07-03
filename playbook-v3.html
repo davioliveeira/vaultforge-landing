@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VaultForge — O conhecimento da sua empresa não pode morar na cabeça de uma pessoa</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1A1C1E;
+    --clay: #C2410C;
+    --clay-dark: #9A3408;
+    --stone: #6C7278;
+    --warm: #FAF8F5;
+    --white: #FFFFFF;
+    --border: #E5E0DA;
+    --muted: #9CA3A0;
+    --success: #166534;
+    --radius: 4px;
+    --radius-md: 8px;
+    --font: 'Public Sans', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--warm);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Shared ── */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 100px 0; position: relative; }
+  .section-dark { background: var(--ink); color: var(--white); }
+  .eyebrow { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--clay); margin-bottom: 12px; }
+  .section-dark .eyebrow { color: var(--clay); }
+  h1 { font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.03em; }
+  h2 { font-size: clamp(1.5rem, 3.5vw, 2.25rem); font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
+  .section-dark h2 { color: var(--white); }
+  .lead { font-size: 1.125rem; line-height: 1.6; color: var(--stone); max-width: 600px; }
+  .section-dark .lead { color: var(--muted); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font); font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; border: none; cursor: pointer; text-decoration: none; padding: 16px 32px; border-radius: var(--radius); transition: background 0.15s, transform 0.15s; }
+  .btn-primary { background: var(--clay); color: var(--white); }
+  .btn-primary:hover { background: var(--clay-dark); transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: var(--warm); }
+
+  /* ── Nav ── */
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(250,248,245,0.94); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .nav .container { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; padding-bottom: 10px; }
+  .nav-logo { font-weight: 700; font-size: 0.9375rem; letter-spacing: -0.01em; }
+  .nav-logo span { color: var(--clay); }
+  .nav-cta { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--clay); text-decoration: none; padding: 8px 0; border-bottom: 2px solid transparent; transition: border-color 0.15s; }
+  .nav-cta:hover { border-bottom-color: var(--clay); }
+
+  /* ── 1. CICATRIZ ── */
+  .cicatriz { padding: 140px 0 100px; }
+  .cicatriz .container { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .cicatriz-story { }
+  .cicatriz-quote { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--clay); margin-bottom: 20px; }
+  .cicatriz h1 { margin-bottom: 24px; }
+  .cicatriz h1 em { font-style: normal; color: var(--clay); }
+  .cicatriz .lead { margin-bottom: 32px; }
+  .cicatriz-illustration { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 32px; }
+  .cicatriz-timeline { }
+  .cicatriz-tl-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+  .cicatriz-tl-item:last-child { border-bottom: none; }
+  .cicatriz-tl-date { font-family: var(--mono); font-size: 0.6875rem; color: var(--stone); min-width: 80px; padding-top: 2px; }
+  .cicatriz-tl-text { font-size: 0.8125rem; line-height: 1.5; }
+  .cicatriz-tl-text strong { display: block; margin-bottom: 2px; }
+  .cicatriz-tl-cost { font-family: var(--mono); font-size: 0.75rem; color: var(--clay); font-weight: 600; margin-top: 4px; }
+
+  /* ── 2. AUTOAVALIAÇÃO ── */
+  .autoavaliacao { background: var(--white); }
+  .autoavaliacao-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; margin-top: 32px; }
+  .assessment-q { padding: 16px 20px; border-left: 2px solid var(--border); margin-bottom: 8px; font-size: 0.875rem; transition: border-color 0.2s; cursor: pointer; }
+  .assessment-q:hover, .assessment-q.selected { border-left-color: var(--clay); }
+  .assessment-q .q-num { font-family: var(--mono); font-size: 0.6875rem; color: var(--stone); margin-bottom: 4px; }
+  .assessment-result { background: var(--warm); border-radius: var(--radius-md); padding: 32px; text-align: center; }
+  .assessment-score { font-size: 4rem; font-weight: 700; color: var(--clay); line-height: 1; margin-bottom: 8px; }
+  .assessment-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--stone); margin-bottom: 16px; }
+  .assessment-verdict { font-size: 0.875rem; color: var(--stone); line-height: 1.5; margin-bottom: 20px; }
+
+  /* ── 3. DIAGNÓSTICO ── */
+  .diagnostico-card { background: var(--white); border: 2px solid var(--ink); border-radius: var(--radius-md); padding: 40px; max-width: 600px; margin: 32px auto 0; }
+  .diagnostico-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 24px; }
+  .diag-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 32px; margin-bottom: 24px; }
+  .diag-spec-label { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  .diag-spec-value { font-size: 1rem; font-weight: 600; }
+  .diag-deliverables { font-size: 0.8125rem; color: var(--stone); margin-bottom: 24px; line-height: 1.5; }
+  .diag-deliverables li { margin-bottom: 6px; padding-left: 4px; }
+  .diag-deliverables li::marker { color: var(--clay); }
+
+  /* ── 4. SEPARAÇÃO ── */
+  .separacao-box { background: var(--warm); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 28px 32px; max-width: 600px; margin: 0 auto; }
+  .separacao-box h4 { font-size: 0.9375rem; font-weight: 600; margin-bottom: 8px; }
+  .separacao-box p { font-size: 0.8125rem; color: var(--stone); line-height: 1.5; }
+  .separacao-box ul { list-style: none; margin-top: 12px; }
+  .separacao-box ul li { font-size: 0.8125rem; padding: 6px 0; padding-left: 20px; position: relative; }
+  .separacao-box ul li::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: 700; font-size: 0.75rem; }
+
+  /* ── 5. PROVA ── */
+  .prova { background: var(--ink); color: var(--white); }
+  .prova blockquote { font-size: 1.25rem; line-height: 1.45; font-weight: 500; max-width: 640px; margin-bottom: 24px; }
+  .prova blockquote::before { content: '\201C'; display: block; font-size: 3rem; line-height: 1; color: var(--clay); margin-bottom: 16px; }
+  .prova figcaption { font-size: 0.8125rem; color: var(--muted); }
+  .prova figcaption strong { color: var(--white); display: block; }
+  .prova-metric { display: inline-block; font-size: 1.5rem; font-weight: 700; color: var(--clay); margin-top: 16px; margin-right: 32px; }
+  .prova-metric span { display: block; font-size: 0.6875rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+
+  /* ── 6. CTA ── */
+  .final-cta { text-align: center; padding: 120px 0; }
+  .final-cta h2 { margin-bottom: 16px; }
+  .final-cta .lead { margin: 0 auto 32px; }
+  .final-guarantee { font-size: 0.75rem; color: var(--stone); margin-top: 16px; }
+
+  /* ── Footer ── */
+  footer { padding: 48px 0; text-align: center; font-size: 0.75rem; color: var(--muted); border-top: 1px solid var(--border); }
+  footer a { color: var(--stone); text-decoration: none; }
+  footer a:hover { color: var(--ink); }
+
+  /* ── Background overlays ── */
+  .bg-overlay { position: absolute; inset: 0; pointer-events: none; }
+  .bg-cicatriz { background: linear-gradient(135deg, rgba(250,248,245,0.97) 0%, rgba(250,248,245,0.88) 100%); }
+  .bg-autoavaliacao { }
+  .bg-prova { }
+
+  @media (max-width: 768px) {
+    .cicatriz .container { grid-template-columns: 1fr; gap: 40px; }
+    .cicatriz { padding: 80px 0 60px; }
+    .autoavaliacao-grid { grid-template-columns: 1fr; }
+    .section { padding: 60px 0; }
+    .diagnostico-card { padding: 24px; }
+    .diag-specs { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<a href="https://wa.me/55XXXXXXXXXXX?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20diagnóstico%20VaultForge" class="whatsapp-float" aria-label="Fale conosco no WhatsApp" style="position:fixed;bottom:24px;right:24px;z-index:100;background:#25D366;color:#fff;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.18);font-size:24px;text-decoration:none;transition:transform 0.15s" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">💬</a>
+
+<nav class="nav">
+  <div class="container">
+    <div class="nav-logo">Vault<span>Forge</span></div>
+    <a href="#autoavaliacao" class="nav-cta">Autodiagnóstico grátis</a>
+  </div>
+</nav>
+
+<!-- ═══ 1. A CICATRIZ ═══ -->
+<section class="cicatriz" style="background-image:url('img/hero-bg.jpg');background-size:cover;background-position:center">
+  <div class="bg-overlay bg-cicatriz"></div>
+  <div class="container" style="position:relative;z-index:1">
+    <div>
+      <div class="cicatriz-quote">História real. Nomes preservados.</div>
+      <h1>O COO pediu demissão numa quinta.<br>Na segunda, <em>ninguém sabia como o faturamento funcionava.</em></h1>
+      <p class="lead">
+        Não era má vontade. Eram 3 anos de conhecimento operacional que viviam na cabeça de uma pessoa. Planilhas de rateio que só ela entendia. Critérios de aprovação que nunca foram escritos. Fornecedores que só ela conhecia. O substituto levou 6 semanas para conseguir faturar o primeiro mês sem erro. Custo estimado: <strong style="color:var(--clay)">R$ 87 mil</strong> em retrabalho, atraso e cliente insatisfeito.
+      </p>
+      <p style="font-size:1.0625rem;font-weight:500;color:var(--stone);margin-bottom:28px">Sua empresa está a um pedido de demissão de viver a mesma história?</p>
+      <a href="#autoavaliacao" class="btn btn-primary">Descobrir se sua empresa tem o mesmo risco →</a>
+    </div>
+    <div class="cicatriz-illustration">
+      <div class="eyebrow" style="font-size:0.625rem">Linha do tempo</div>
+      <div class="cicatriz-timeline">
+        <div class="cicatriz-tl-item">
+          <div class="cicatriz-tl-date">Qui, 14h</div>
+          <div class="cicatriz-tl-text"><strong>Pedido de demissão</strong>COO comunica saída imediata.</div>
+        </div>
+        <div class="cicatriz-tl-item">
+          <div class="cicatriz-tl-date">Seg, 9h</div>
+          <div class="cicatriz-tl-text"><strong>Ninguém sabe faturar</strong>Rateios, exceções e aprovações não documentados.</div>
+        </div>
+        <div class="cicatriz-tl-item">
+          <div class="cicatriz-tl-date">+6 sem</div>
+          <div class="cicatriz-tl-text"><strong>Primeiro faturamento sem erro</strong>Após 42 dias de retrabalho e R$ 87 mil em perdas.</div>
+        </div>
+        <div class="cicatriz-tl-item">
+          <div class="cicatriz-tl-date">+8 sem</div>
+          <div class="cicatriz-tl-text"><strong>VaultForge entra</strong>Diagnóstico revela 23 gaps. Em 5 dias, inventário completo.<div class="cicatriz-tl-cost">Investimento: R$ 2.900</div></div>
+        </div>
+        <div class="cicatriz-tl-item">
+          <div class="cicatriz-tl-date">+16 sem</div>
+          <div class="cicatriz-tl-text"><strong>Memória operacional no lugar</strong>47 processos documentados com owner, fonte e revisão. <strong style="color:var(--success)">Custo de turnover futuro: zero.</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 2. AUTOAVALIAÇÃO ═══ -->
+<section class="autoavaliacao section" id="autoavaliacao">
+  <div class="container">
+    <div class="eyebrow">5 minutos · sem cadastro · sem compromisso</div>
+    <h2>Qual o risco da sua operação depender de pessoas, não de processos?</h2>
+    <p class="lead">Responda as perguntas abaixo. Cada uma ilumina um ponto cego diferente. Você recebe o diagnóstico na hora.</p>
+    <div class="autoavaliacao-grid" id="assessment">
+      <div>
+        <div class="assessment-q" data-score="3">
+          <div class="q-num">01</div>
+          <div>Se seu gerente de operações pedir demissão amanhã, quanto tempo até o substituto faturar o primeiro mês sem erro?</div>
+        </div>
+        <div class="assessment-q" data-score="3">
+          <div class="q-num">02</div>
+          <div>Quantas decisões operacionais da sua empresa têm registro de quem decidiu, quando e com qual critério?</div>
+        </div>
+        <div class="assessment-q" data-score="2">
+          <div class="q-num">03</div>
+          <div>O WhatsApp da sua empresa sumiu. Qual o nível de caos operacional?</div>
+        </div>
+        <div class="assessment-q" data-score="2">
+          <div class="q-num">04</div>
+          <div>Seu time já tentou documentar processos no Notion. Quanto tempo durou até virar cemitério de páginas?</div>
+        </div>
+        <div class="assessment-q" data-score="3">
+          <div class="q-num">05</div>
+          <div>Um agente de IA entrou na sua empresa hoje. Ele tem onde ler o contexto para executar uma tarefa operacional?</div>
+        </div>
+      </div>
+      <div class="assessment-result" id="assessment-result">
+        <div class="assessment-score" id="score">—</div>
+        <div class="assessment-label">Nível de risco operacional</div>
+        <div class="assessment-verdict" id="verdict">Responda as perguntas ao lado para ver seu resultado.</div>
+        <a href="#diagnostico" class="btn btn-primary" id="assessment-cta" style="display:none">Resolver isso agora →</a>
+        <p style="font-size:0.6875rem;color:var(--muted);margin-top:12px;display:none" id="assessment-note">Esse é o cenário que o diagnóstico de R$ 2.900 resolve em 5 dias.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 3. O DIAGNÓSTICO ═══ -->
+<section class="section" id="diagnostico" style="background:var(--warm)">
+  <div class="container">
+    <div class="eyebrow">O diagnóstico como produto</div>
+    <h2 style="text-align:center">Você não precisa contratar uma consultoria.<br>Precisa de um mapa.</h2>
+    <p class="lead" style="text-align:center;margin:0 auto 0">Compre só o diagnóstico. A continuidade é opcional. O relatório é seu.</p>
+    <div class="diagnostico-card">
+      <h3>Diagnóstico de Prontidão Operacional</h3>
+      <div class="diag-specs">
+        <div><div class="diag-spec-label">Investimento</div><div class="diag-spec-value">R$ 2.900</div></div>
+        <div><div class="diag-spec-label">Prazo</div><div class="diag-spec-value">5 dias úteis</div></div>
+        <div><div class="diag-spec-label">Formato</div><div class="diag-spec-value">12 páginas + apresentação</div></div>
+        <div><div class="diag-spec-label">Pagamento</div><div class="diag-spec-value">Único · sem recorrência</div><div style="font-size:0.6875rem;color:var(--muted);margin-top:2px">PIX, boleto ou cartão</div></div>
+      </div>
+      <div class="diag-deliverables"><strong>O que você recebe:</strong>
+        <ul>
+          <li>Mapa completo do conhecimento crítico da sua operação</li>
+          <li>Maturidade por área (Operações, Comercial, Financeiro, Produto)</li>
+          <li>Gaps priorizados com estimativa de impacto</li>
+          <li>Recomendações independentes — executáveis com ou sem a gente</li>
+        </ul>
+      </div>
+      <div style="background:var(--warm);padding:16px;border-radius:var(--radius);margin-bottom:20px">
+        <p style="font-size:0.8125rem;font-weight:600;margin-bottom:4px">Garantia VaultForge</p>
+        <p style="font-size:0.75rem;color:var(--stone);line-height:1.5">Se o diagnóstico não identificar pelo menos <strong>3 gaps operacionais</strong> com potencial de retorno superior a 10× o valor investido, devolvemos 100% do seu dinheiro. Sem letra miúda.</p>
+      </div>
+      <a href="#" class="btn btn-primary" style="width:100%;justify-content:center">Contratar diagnóstico — R$ 2.900</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 4. SEPARAÇÃO DE COMPROMISSO ═══ -->
+<section class="section" style="background:var(--white);padding:60px 0">
+  <div class="container">
+    <div class="separacao-box">
+      <h4>O diagnóstico é um produto com começo, meio e fim.</h4>
+      <p>O que você faz com o relatório depois é decisão sua. Não existe contratação automática de nada. Não existe "próxima fase obrigatória".</p>
+      <ul>
+        <li>Você pode executar as recomendações com seu time interno</li>
+        <li>Você pode contratar outra consultoria — o relatório é seu</li>
+        <li>Você pode não fazer nada agora e usar o mapa no futuro</li>
+        <li>Se decidir continuar com a gente, cada fase é contratada separadamente</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 5. PROVA SOCIAL ═══ -->
+<section class="prova section" style="background-image:url('img/testimonial-bg.jpg');background-size:cover;background-position:center">
+  <div style="position:absolute;inset:0;background:rgba(26,28,30,0.92)"></div>
+  <div class="container" style="position:relative;z-index:1">
+    <div class="eyebrow">Quem já passou por isso</div>
+    <figure>
+      <blockquote>Quando nosso head de operações saiu, perdemos 3 semanas reconstruindo critérios de aprovação que só ele conhecia. Depois do VaultForge, o runbook de qualificação de leads ficou documentado com dono, prazo de revisão e fonte oficial. O time novo operou em 4 dias.</blockquote>
+      <figcaption>
+        <strong>COO de uma fintech de 80 pessoas</strong>
+        Fintech de 80 funcionários · São Paulo
+      </figcaption>
+      <div class="prova-metric">−65%<span>tempo de ramp-up</span></div>
+      <div class="prova-metric">47<span>processos documentados</span></div>
+      <div class="prova-metric">R$ 0<span>custo de turnover futuro</span></div>
+    </figure>
+  </div>
+</section>
+
+<!-- ═══ 6. CTA FINAL ═══ -->
+<section class="final-cta section">
+  <div class="container">
+    <h2>O conhecimento da sua empresa<br>não pode morar na cabeça de uma pessoa.</h2>
+    <p class="lead">Se o diagnóstico não achar pelo menos 3 gaps que custam mais de R$ 29 mil por ano para sua operação, você não paga nada.</p>
+    <a href="#" class="btn btn-primary">Fazer autodiagnóstico grátis (5 min) →</a>
+    <p class="final-guarantee">Depois, se quiser: diagnóstico completo por R$ 2.900 · 5 dias · garantia de resultado ou reembolso</p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    VaultForge © 2026 · <a href="#">Termos</a> · <a href="#">Privacidade</a> · <a href="#">DESIGN.md</a>
+  </div>
+</footer>
+
+<script>
+  // Interactive self-assessment
+  (function() {
+    const questions = document.querySelectorAll('.assessment-q');
+    const scoreEl = document.getElementById('score');
+    const verdictEl = document.getElementById('verdict');
+    const ctaBtn = document.getElementById('assessment-cta');
+    const ctaNote = document.getElementById('assessment-note');
+    let answered = new Set();
+
+    questions.forEach(q => {
+      q.addEventListener('click', () => {
+        q.classList.toggle('selected');
+        const idx = q.querySelector('.q-num').textContent;
+        if (q.classList.contains('selected')) {
+          answered.add(q);
+        } else {
+          answered.delete(q);
+        }
+        updateScore();
+      });
+    });
+
+    function updateScore() {
+      if (answered.size === 0) {
+        scoreEl.textContent = '—';
+        verdictEl.textContent = 'Responda as perguntas ao lado para ver seu resultado.';
+        ctaBtn.style.display = 'none';
+        ctaNote.style.display = 'none';
+        return;
+      }
+      let totalScore = 0;
+      answered.forEach(q => { totalScore += parseInt(q.dataset.score); });
+      const maxScore = questions.length * 3;
+      const pct = Math.round((totalScore / maxScore) * 100);
+
+      scoreEl.textContent = pct + '%';
+      ctaBtn.style.display = 'inline-flex';
+      ctaNote.style.display = 'block';
+
+      if (pct >= 80) {
+        verdictEl.textContent = 'Alerta máximo. Sua operação tem dependência crítica de pessoas. Um turnover de posição-chave pode custar meses de retrabalho. O diagnóstico é o primeiro passo para blindar isso.';
+      } else if (pct >= 50) {
+        verdictEl.textContent = 'Risco moderado. Você tem alguns processos documentados, mas os gaps são reais — e caros. O diagnóstico revela exatamente onde estão.';
+      } else {
+        verdictEl.textContent = 'Risco presente. Mesmo em nível mais baixo, cada gap de conhecimento operacional é uma multa que você paga no futuro — em retrabalho, em atraso, em cliente insatisfeito.';
+      }
+    }
+  })();
+</script>
+
+</body>
+</html>

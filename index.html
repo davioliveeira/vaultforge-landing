@@ -69,13 +69,22 @@
   .cicatriz h1 em { font-style: normal; color: var(--clay); }
   .cicatriz .lead { margin-bottom: 10px; }
   .mirror-bridge { font-size: 1.0625rem; font-weight: 500; color: var(--stone); margin-bottom: 28px; }
-  .cicatriz-illustration { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 32px; }
-  .tl-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border); }
-  .tl-item:last-child { border-bottom: none; }
-  .tl-date { font-family: var(--mono); font-size: 0.6875rem; color: var(--stone); min-width: 70px; padding-top: 2px; }
-  .tl-text { font-size: 0.8125rem; line-height: 1.5; }
-  .tl-text strong { display: block; margin-bottom: 2px; }
-  .tl-cost { font-family: var(--mono); font-size: 0.75rem; color: var(--clay); font-weight: 600; margin-top: 4px; }
+  /* ── Timeline ── */
+  .cicatriz-illustration { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px 20px; position: relative; overflow: hidden; }
+  .tl-header { font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 12px; }
+  .tl-list { position: relative; padding-left: 0; }
+  .tl-list::before { content: ''; position: absolute; left: 52px; top: 4px; bottom: 4px; width: 2px; background: var(--border); border-radius: 1px; }
+  .tl-item { display: flex; gap: 14px; padding: 10px 0; position: relative; }
+  .tl-item:first-child { padding-top: 0; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-dot { position: absolute; left: 52px; top: 16px; width: 8px; height: 8px; border-radius: 50%; background: var(--white); border: 2px solid var(--border); transform: translate(-3px, 0); z-index: 1; transition: background 0.3s, border-color 0.3s; }
+  .tl-item.vf-entered .tl-dot { background: var(--clay); border-color: var(--clay); }
+  .tl-item:last-child .tl-dot { background: var(--success); border-color: var(--success); }
+  .tl-date { font-family: var(--mono); font-size: 0.6875rem; color: var(--stone); min-width: 52px; padding-top: 2px; text-align: right; flex-shrink: 0; }
+  .tl-text { font-size: 0.8125rem; line-height: 1.45; padding-right: 4px; }
+  .tl-text strong { display: block; margin-bottom: 1px; font-size: 0.8125rem; }
+  .tl-cost { font-family: var(--mono); font-size: 0.6875rem; color: var(--clay); font-weight: 600; margin-top: 3px; }
+  .tl-highlight { color: var(--success); font-weight: 600; }
 
   /* ── 2. AUTOAVALIAÇÃO ── */
   .autoavaliacao { background: var(--white); }
@@ -145,8 +154,13 @@
     .mobile-sticky-cta { display: block; position: fixed; bottom: 0; left: 0; right: 0; z-index: 49; background: var(--ink); padding: 12px 16px; transform: translateY(100%); transition: transform 0.3s ease; }
     .mobile-sticky-cta.visible { transform: translateY(0); }
     .mobile-sticky-cta .btn { width: 100%; justify-content: center; }
-    .cicatriz .container { grid-template-columns: 1fr; gap: 40px; }
-    .cicatriz { padding: 80px 0 60px; }
+    .cicatriz .container { grid-template-columns: 1fr; gap: 32px; }
+    .cicatriz { padding: 60px 0 40px; }
+    .cicatriz-illustration { padding: 16px 12px; }
+    .tl-list::before { left: 44px; }
+    .tl-dot { left: 44px; }
+    .tl-date { min-width: 44px; font-size: 0.625rem; }
+    .tl-text { font-size: 0.75rem; }
     .assessment-wrap { grid-template-columns: 1fr; }
     .section { padding: 60px 0; }
     .diagnostico-card { padding: 24px; }
@@ -184,13 +198,15 @@
       <p class="mirror-bridge reveal">Sua empresa está a um pedido de demissão de viver a mesma história?</p>
       <div class="reveal"><a href="#autoavaliacao" class="btn btn-primary">Descobrir se sua empresa tem o mesmo risco →</a></div>
     </div>
-    <div class="cicatriz-illustration reveal-stagger" id="timeline">
-      <div class="eyebrow" style="font-size:0.625rem;margin-bottom:16px">Linha do tempo</div>
-      <div class="tl-item"><div class="tl-date">Qui, 14h</div><div class="tl-text"><strong>Pedido de demissão</strong>COO comunica saída imediata.</div></div>
-      <div class="tl-item"><div class="tl-date">Seg, 9h</div><div class="tl-text"><strong>Ninguém sabe faturar</strong>Rateios, exceções e aprovações não documentados.</div></div>
-      <div class="tl-item"><div class="tl-date">+6 sem</div><div class="tl-text"><strong>Primeiro faturamento sem erro</strong>Após 42 dias de retrabalho e R$ 87 mil em perdas.</div></div>
-      <div class="tl-item"><div class="tl-date">+8 sem</div><div class="tl-text"><strong>VaultForge entra</strong>Diagnóstico revela 23 gaps. Em 5 dias, inventário completo.<div class="tl-cost">Investimento: R$ 2.900</div></div></div>
-      <div class="tl-item"><div class="tl-date">+16 sem</div><div class="tl-text"><strong>Memória operacional no lugar</strong>47 processos documentados com owner, fonte e revisão. <strong style="color:var(--success)">Custo de turnover futuro: zero.</strong></div></div>
+    <div class="cicatriz-illustration" id="timeline">
+      <div class="tl-header">Linha do tempo</div>
+      <div class="tl-list">
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Qui, 14h</div><div class="tl-text"><strong>Pedido de demissão</strong>COO comunica saída imediata.</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Seg, 9h</div><div class="tl-text"><strong>Ninguém sabe faturar</strong>Rateios, exceções e aprovações não documentados.</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">+6 sem</div><div class="tl-text"><strong>Primeiro faturamento sem erro</strong>Após 42 dias de retrabalho e R$ 87 mil em perdas.</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">+8 sem</div><div class="tl-text"><strong>VaultForge entra</strong>Diagnóstico revela 23 gaps. Em 5 dias, inventário completo.<div class="tl-cost">Investimento: R$ 2.900</div></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">+16 sem</div><div class="tl-text"><strong>Memória operacional no lugar</strong>47 processos documentados com owner, fonte e revisão. <span class="tl-highlight">Custo de turnover futuro: zero.</span></div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -375,18 +391,20 @@ gsap.to('#timeline', {
   }
 });
 
-// ── GSAP: Timeline items stagger reveal ──
-gsap.from('.tl-item', {
+// ── GSAP: Timeline items fade-in stagger ──
+gsap.from('#timeline .tl-item', {
   scrollTrigger: {
     trigger: '#timeline',
-    start: 'top 80%',
+    start: 'top 75%',
     toggleActions: 'play none none none'
   },
   opacity: 0,
-  x: -30,
-  duration: 0.4,
-  stagger: 0.12,
-  ease: 'power2.out'
+  duration: 0.35,
+  stagger: 0.1,
+  ease: 'power2.out',
+  onComplete: function() {
+    this.targets().forEach(el => el.classList.add('vf-entered'));
+  }
 });
 
 // ── Mobile sticky CTA ──
